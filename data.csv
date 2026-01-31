@@ -1,0 +1,29 @@
+python,java,sql,ml,excel,communication,design,cloud,marketing,management,aws,docker,linux,sap,cyber,react,seo,career
+1,0,1,1,1,0,0,0,0,0,0,0,1,0,0,0,0,Data Scientist
+1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,ML Engineer
+1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,AI Engineer
+1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,Full Stack Developer
+1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,Backend Developer
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,Frontend Developer
+0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,UI/UX Designer
+0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,Cloud Engineer
+0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,DevOps Engineer
+1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,Data Analyst
+0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,Business Analyst
+0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,1,Digital Marketer
+0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,HR Executive
+0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,Sales Executive
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,Operations Manager
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,Project Manager
+0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,Content Writer
+0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,Customer Support
+0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,Finance Analyst
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,Supply Chain Analyst
+0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,Cyber Security Analyst
+0,0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,Cloud Architect
+0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,SAP Consultant
+0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,Network Engineer
+1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,AI Researcher
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Blockchain Developer
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,Game Developer
+0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,Product Manager
