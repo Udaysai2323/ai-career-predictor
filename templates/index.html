@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Career Predictor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #1f4037, #99f2c8);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+}
+
+.card {
+    background: #ffffff;
+    width: 460px;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+.progress-card {
+    width: 90%;
+    max-width: 900px;
+}
+
+h1 { color: #2c3e50; margin-bottom: 8px; }
+
+.subtitle {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+input[type=file] {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed #0072ff;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.section {
+    margin-top: 18px;
+    padding: 12px;
+    background: #f4f7ff;
+    border-radius: 10px;
+    border-left: 5px solid #0072ff;
+    text-align: left;
+}
+
+.highlight { color: #0072ff; font-weight: bold; }
+
+.bar {
+    background: #ddd;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.bar-fill {
+    background: linear-gradient(90deg,#00b09b,#96c93d);
+    color: white;
+    padding: 6px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+    gap: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-container">
+
+    <!-- CARD 1 -->
+    <div class="card">
+        <h1>AI Career Predictor</h1>
+        <p class="subtitle">Upload your resume (PDF/DOCX)</p>
+
+        <input type="file" id="resume" accept=".pdf,.docx">
+        <button onclick="uploadResume()">Predict Career</button>
+
+        <div id="summary"></div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="card progress-card" id="progressCard" style="display:none;">
+        <h2 class="highlight">Skill Match Progress</h2>
+        <div id="progress"></div>
+    </div>
+
+</div>
+
+<script>
+function uploadResume() {
+    let fileInput = document.getElementById("resume");
+    if (!fileInput.files.length) {
+        alert("Please upload a resume!");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("resume", fileInput.files[0]);
+
+    fetch("/predict", { method: "POST", body: formData })
+    .then(res => res.json())
+    .then(data => {
+
+        if (data.error) {
+            document.getElementById("summary").innerHTML =
+                `<p style="color:red;">${data.error}</p>`;
+            return;
+        }
+
+        let summaryHTML = `
+        <div class="section">
+            <h3 class="highlight">Top Career Matches</h3>
+            <ol>
+                ${data.top3.map(r => `<li><b>${r.role}</b> (${r.score}%)</li>`).join("")}
+            </ol>
+        </div>`;
+
+        if (data.detected_domains) {
+            summaryHTML += `
+            <div class="section">
+                <h3 class="highlight">Detected Domains</h3>
+                <ul>
+                    ${data.detected_domains.map(d => `<li>${d}</li>`).join("")}
+                </ul>
+            </div>`;
+        }
+
+        if (data.best_target) {
+            summaryHTML += `
+            <div class="section">
+                <h4>Best Reachable Career</h4>
+                <p class="highlight">${data.best_target}</p>
+
+                <h4>Missing Skills</h4>
+                <ul>
+                    ${data.missing_skills.map(s => `<li>${s}</li>`).join("")}
+                </ul>
+            </div>`;
+        }
+
+        const techRoles = [
+            "Data Scientist",
+            "Machine Learning Engineer",
+            "AI Engineer",
+            "AI Researcher",
+            "Full Stack Developer",
+            "Backend Developer",
+            "Frontend Developer",
+            "Cloud Engineer",
+            "Cloud Architect",
+            "DevOps Engineer",
+            "Data Analyst",
+            "UI/UX Designer",
+            "Cyber Security Analyst",
+            "Network Engineer",
+            "SAP Consultant",
+            "Blockchain Developer",
+            "Game Developer",
+            "Business Analyst",
+            "Software Engineer",
+            "ML Engineer"
+        ];
+
+        let techBars = "", nonTechBars = "";
+        let techTotal = 0, techCount = 0, nonTechTotal = 0, nonTechCount = 0;
+
+        data.progress.forEach(p => {
+            let bar = `
+            <p>${p.role} (${p.percent}%)</p>
+            <div class="bar">
+                <div class="bar-fill" style="width:${p.percent}%">${p.percent}%</div>
+            </div>`;
+
+            if (techRoles.includes(p.role)) {
+                techBars += bar; techTotal += p.percent; techCount++;
+            } else {
+                nonTechBars += bar; nonTechTotal += p.percent; nonTechCount++;
+            }
+        });
+
+        let finalSuit = (techTotal/techCount) > (nonTechTotal/nonTechCount) ? "TECH" : "NON-TECH";
+        let color = finalSuit === "TECH" ? "#0072ff" : "#ff6600";
+
+        let progressHTML = `
+        <div class="section">
+            <h2 style="color:${color}">You are more suitable for: ${finalSuit}</h2>
+
+            <div class="flex">
+                <div style="flex:1">
+                    <h4>Tech Roles</h4>${techBars}
+                </div>
+                <div style="flex:1">
+                    <h4>Non-Tech Roles</h4>${nonTechBars}
+                </div>
+            </div>
+        </div>`;
+
+        document.getElementById("summary").innerHTML = summaryHTML;
+        document.getElementById("progress").innerHTML = progressHTML;
+        document.getElementById("progressCard").style.display = "block";
+    })
+    .catch(() => {
+        document.getElementById("summary").innerHTML =
+            "<p style='color:red;'>Server error. Try again.</p>";
+    });
+}
+</script>
+
+</body>
+</html>
